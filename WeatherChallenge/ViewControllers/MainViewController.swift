@@ -25,7 +25,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         self.title = "Sohail's weather app"
         setupViews()
-
+        
         viewModel.viewModelLocationDelegate = self
         
         let userDefaults = UserDefaults.standard
@@ -203,22 +203,22 @@ extension MainViewController: SearchInputViewControllerDelegate {
 extension MainViewController: WeatherViewModelLocationDelegate {
     func sendUserToSettings() {
         let alertController = UIAlertController(
-             title: "Location Access Denied",
-             message: "Please enable location services in Settings to use the current location feature.",
-             preferredStyle: .alert
-         )
-         
-         let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
-             guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
-             if UIApplication.shared.canOpenURL(settingsURL) {
-                 UIApplication.shared.open(settingsURL)
-             }
-         }
-         alertController.addAction(settingsAction)
-         
-         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-         alertController.addAction(cancelAction)
-         
+            title: "Location Access Denied",
+            message: "Please enable location services in Settings to use the current location feature.",
+            preferredStyle: .alert
+        )
+        
+        let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
+            guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
+            if UIApplication.shared.canOpenURL(settingsURL) {
+                UIApplication.shared.open(settingsURL)
+            }
+        }
+        alertController.addAction(settingsAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
         DispatchQueue.main.async {
             self.present(alertController, animated: true, completion: nil)
         }
