@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreLocation
+import Combine
 
 class MainViewController: UIViewController {
     
@@ -14,24 +15,54 @@ class MainViewController: UIViewController {
     let kLastSearchedPlace = "lastSearchedPlace"
     
     var locationManager: CLLocationManager?
+
+    var viewModel = WeatherViewModel()
     
     let tableView: UITableView = UITableView()
     
+    var cancellables = Set<AnyCancellable>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupViews()
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "weatherCell")
+        
+        
         
         let userDefaults = UserDefaults.standard
         if let lastSearchedPlace = userDefaults.string(forKey: kLastSearchedPlace) {
             // make a request for that city name
         } else {
-            // use current location if we have one.
+            // get current location
+            // if we can't use CL, use SF
             // default to san fransisco
         }
         
-        setupViews()
+        viewModel.$placeName
+            .sink { [weak self] _ in
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$weather
+            .sink { [weak self] _ in
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
+            }
+            .store(in: &cancellables)
+        
+       
+        viewModel.fetchWeatherDataAndReverseGeocode(latitude: 37.7749, longitude: -122.4194)
+        tableView.reloadData()
     }
     
     func setupViews() {
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(tableView)
         let constraints = [
@@ -51,14 +82,40 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         return 3
     }
     
+    enum WeatherSection: Int {
+        case currentTemp = 0
+        case hourlyTemps = 1
+        case dailyTemps = 2
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // per section, return number of items
-        return 2
+        if section == WeatherSection.currentTemp.rawValue {
+            return viewModel.weather?.current.weather.count ?? 0
+            
+        } else if section == WeatherSection.hourlyTemps.rawValue {
+            return viewModel.weather?.hourly.count ?? 0
+            
+        } else if section == WeatherSection.dailyTemps.rawValue {
+            return viewModel.weather?.daily.count ?? 0
+        }
+        
+        return 0
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath)
+        
+        
+        if indexPath.section == 0 {
+            if let currentWeather = viewModel.weather?.current, let name = viewModel.placeName {
+                
+//                cell.textLabel?.text = "Temperature: \(currentWeather.temp)"
+                cell.textLabel?.text = "\(name) current temp \(currentWeather.temp)"
+            }
+        }
+        
         
         return cell
     }
