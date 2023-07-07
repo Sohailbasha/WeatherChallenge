@@ -18,9 +18,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="hYN-KY-YWS">
-                        <barButtonItem key="rightBarButtonItem" title="Search" id="apy-rT-E76"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="hYN-KY-YWS"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
