@@ -28,7 +28,11 @@ class WeatherService {
     }
     
     func fetchWeatherData(latitude: Double, longitude: Double) -> AnyPublisher<Weather, Error> {
-        var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)!
+        
+        guard var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true) else {
+                return Fail(error: WeatherServiceError.invalidURL).eraseToAnyPublisher()
+            }
+        
         urlComponents.queryItems = [
             URLQueryItem(name: "lat", value: String(latitude)),
             URLQueryItem(name: "lon", value: String(longitude)),
@@ -36,7 +40,11 @@ class WeatherService {
             URLQueryItem(name: "units", value: "imperial")
         ]
         
-        let request = URLRequest(url: urlComponents.url!)
+        guard let componentsURL = urlComponents.url else {
+            return Fail(error: WeatherServiceError.invalidURL).eraseToAnyPublisher()
+        }
+        
+        let request = URLRequest(url: componentsURL)
         
         return URLSession.shared.dataTaskPublisher(for: request)
             .map(\.data)
@@ -46,9 +54,16 @@ class WeatherService {
     }
     
     func reverseGeocode(latitude: Double, longitude: Double) -> AnyPublisher<String, Error> {
-        let geocodingBaseURL = URL(string: "http://api.openweathermap.org/geo/1.0/reverse")!
+        let baseURL = "http://api.openweathermap.org/geo/1.0/reverse"
         
-        var urlComponents = URLComponents(url: geocodingBaseURL, resolvingAgainstBaseURL: true)!
+        guard let geocodingBaseURL = URL(string: baseURL) else {
+            return Fail(error: WeatherServiceError.invalidURL).eraseToAnyPublisher()
+        }
+        
+        guard var urlComponents = URLComponents(url: geocodingBaseURL, resolvingAgainstBaseURL: true) else {
+            return Fail(error: WeatherServiceError.invalidURL).eraseToAnyPublisher()
+        }
+        
         urlComponents.queryItems = [
             URLQueryItem(name: "lat", value: String(latitude)),
             URLQueryItem(name: "lon", value: String(longitude)),
