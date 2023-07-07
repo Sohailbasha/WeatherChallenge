@@ -16,6 +16,7 @@
 		FD92666E2A586D5C006AA2CD /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD92666D2A586D5C006AA2CD /* Weather.swift */; };
 		FD9266712A586E99006AA2CD /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9266702A586E99006AA2CD /* MainViewController.swift */; };
 		FD9266742A586ECF006AA2CD /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9266732A586ECF006AA2CD /* WeatherViewModel.swift */; };
+		FD9266762A587758006AA2CD /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9266752A587758006AA2CD /* WeatherService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		FD92666D2A586D5C006AA2CD /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		FD9266702A586E99006AA2CD /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		FD9266732A586ECF006AA2CD /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
+		FD9266752A587758006AA2CD /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 			children = (
 				FD9266702A586E99006AA2CD /* MainViewController.swift */,
 				FD9266732A586ECF006AA2CD /* WeatherViewModel.swift */,
+				FD9266752A587758006AA2CD /* WeatherService.swift */,
 				FD9266562A5860B8006AA2CD /* AppDelegate.swift */,
 				FD9266582A5860B8006AA2CD /* SceneDelegate.swift */,
 				FD92666F2A586E20006AA2CD /* Models */,
@@ -164,6 +167,7 @@
 				FD92666E2A586D5C006AA2CD /* Weather.swift in Sources */,
 				FD9266572A5860B8006AA2CD /* AppDelegate.swift in Sources */,
 				FD9266592A5860B8006AA2CD /* SceneDelegate.swift in Sources */,
+				FD9266762A587758006AA2CD /* WeatherService.swift in Sources */,
 				FD9266712A586E99006AA2CD /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
