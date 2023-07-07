@@ -8,7 +8,11 @@
 import UIKit
 
 protocol SearchInputViewControllerDelegate: AnyObject {
+    // had I more time i would have deleted the viewcontroller params. I had an idea for them but didn't use them in the end
+    
+    /// Notifies the main view controller of the text that was entered on this screen
     func searchViewController(_ viewController: SearchInputViewController, didEnterLocation input: String)
+    /// Notifies the main view controller that it should fetch the users current location
     func searchViewControllerDidTriggerCurrentLocation(_ viewController: SearchInputViewController)
 }
 

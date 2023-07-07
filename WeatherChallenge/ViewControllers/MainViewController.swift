@@ -21,6 +21,8 @@ class MainViewController: UIViewController {
     
     var cancellables = Set<AnyCancellable>()
     
+    // Had I more time I would have added a loading spinner
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Sohail's weather app"
@@ -83,6 +85,7 @@ class MainViewController: UIViewController {
     }
 }
 
+// Had I had more time I would have utilized CollectionView's
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {

@@ -101,6 +101,7 @@ protocol WeatherViewModelLocationDelegate: AnyObject {
     func sendUserToSettings()
 }
 
+// should have moved locaiton logic to its own class
 extension WeatherViewModel: CLLocationManagerDelegate {
     
     func requestLocationAuthorization() {
