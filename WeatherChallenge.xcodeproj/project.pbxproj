@@ -66,7 +66,7 @@
 			children = (
 				FD9266702A586E99006AA2CD /* MainViewController.swift */,
 				FD9266732A586ECF006AA2CD /* WeatherViewModel.swift */,
-				FD9266752A587758006AA2CD /* WeatherService.swift */,
+				FD9266792A5894BC006AA2CD /* Networking */,
 				FD9266562A5860B8006AA2CD /* AppDelegate.swift */,
 				FD9266582A5860B8006AA2CD /* SceneDelegate.swift */,
 				FD92666F2A586E20006AA2CD /* Models */,
@@ -84,6 +84,14 @@
 				FD92666D2A586D5C006AA2CD /* Weather.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		FD9266792A5894BC006AA2CD /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				FD9266752A587758006AA2CD /* WeatherService.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
