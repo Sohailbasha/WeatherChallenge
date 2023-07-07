@@ -39,3 +39,9 @@ struct WeatherDetail: Decodable {
   let description: String
   let icon: String
 }
+
+struct Geocoding: Decodable {
+  let lat: Double
+  let lon: Double
+  let name: String
+}
