@@ -13,6 +13,7 @@ struct Weather: Decodable {
   let daily: [Daily]
 }
 
+// model object for current temperature
 struct Current: Decodable {
   let temp: Double
   let weather: [WeatherDetail]
@@ -32,6 +33,7 @@ struct Temperature: Decodable {
   let day: Double
 }
 
+// model object to access icons
 struct WeatherDetail: Decodable {
   let id: Int
   let description: String
