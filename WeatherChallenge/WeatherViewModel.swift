@@ -10,11 +10,15 @@ import Combine
 import CoreLocation
 
 class WeatherViewModel: NSObject, ObservableObject {
-
+    
     @Published var weather: Weather?
     @Published var placeName: String?
     
     var cancellables = Set<AnyCancellable>()
+    
+    deinit {
+        cancellables.forEach { $0.cancel() } // Cancel the cancellables
+    }
     
     private let weatherService = WeatherService.shared
     private var shouldFetchWeather = false
@@ -39,8 +43,8 @@ class WeatherViewModel: NSObject, ObservableObject {
             viewModelLocationDelegate?.sendUserToSettings()
             
         }
-      }
-
+    }
+    
     func fetchWeatherData(by inputString: String) {
         weatherService.geocodeLocation(textInput: inputString)
             .flatMap { [weak self] geocodeResponse -> AnyPublisher<Weather, Error> in
@@ -69,20 +73,20 @@ class WeatherViewModel: NSObject, ObservableObject {
         let reverseGeocodingPublisher = weatherService.reverseGeocode(latitude: latitude, longitude: longitude)
         
         Publishers.Zip(weatherPublisher, reverseGeocodingPublisher)
-          .sink(receiveCompletion: { completion in
-            switch completion {
-            case .failure(let error):
-              print("Error: \(error)")
-            case .finished:
-              break
-            }
-          }, receiveValue: { [weak self] weather, placeName in
-            self?.weather = weather
-            self?.placeName = placeName
-              print(placeName)
-              UserDefaults.standard.set(placeName, forKey: kLastSearchedPlace)
-          })
-          .store(in: &cancellables)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Error: \(error)")
+                case .finished:
+                    break
+                }
+            }, receiveValue: { [weak self] weather, placeName in
+                self?.weather = weather
+                self?.placeName = placeName
+                print(placeName)
+                UserDefaults.standard.set(placeName, forKey: kLastSearchedPlace)
+            })
+            .store(in: &cancellables)
     }
     
     // formatting methods
@@ -104,27 +108,27 @@ extension WeatherViewModel: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-          switch status {
-          case .notDetermined:
-              locationManager.requestWhenInUseAuthorization()
-          case .authorizedWhenInUse, .authorizedAlways:
-              locationManager.startUpdatingLocation()
-          case .denied, .restricted:
-              // If we cannot get users location, show them temperature for San Fransisco
-              fetchWeatherDataAndReverseGeocode(latitude: 37.7749, longitude: -122.4194)
-          default:
-              return
-          }
-      }
-      
-      func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-          if let location = locations.first {
-              locationManager.stopUpdatingLocation()
-              fetchWeatherDataAndReverseGeocode(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-          }
-      }
-      
-      func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-          print(error)
-      }
+        switch status {
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        case .authorizedWhenInUse, .authorizedAlways:
+            locationManager.startUpdatingLocation()
+        case .denied, .restricted:
+            // If we cannot get users location, show them temperature for San Fransisco
+            fetchWeatherDataAndReverseGeocode(latitude: 37.7749, longitude: -122.4194)
+        default:
+            return
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            locationManager.stopUpdatingLocation()
+            fetchWeatherDataAndReverseGeocode(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
+    }
 }
