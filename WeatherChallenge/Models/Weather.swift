@@ -20,11 +20,13 @@ struct Current: Decodable {
 }
 
 struct Hourly: Decodable {
-  let temp: Double
-  let weather: [WeatherDetail]
+    let dt: Int
+    let temp: Double
+    let weather: [WeatherDetail]
 }
 
 struct Daily: Decodable {
+    let dt: Int
   let temp: Temperature
   let weather: [WeatherDetail]
 }
