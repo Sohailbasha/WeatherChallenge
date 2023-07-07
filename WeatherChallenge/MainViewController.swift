@@ -103,6 +103,19 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         return 0
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case WeatherSection.currentTemp.rawValue:
+            return "Today's Average Temperature"
+        case WeatherSection.hourlyTemps.rawValue:
+            return "Hourly Average Temperature"
+        case WeatherSection.dailyTemps.rawValue:
+            return "Daily Average Temperature"
+        default:
+            return nil
+        }
+    }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath)
@@ -110,12 +123,25 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         
         if indexPath.section == 0 {
             if let currentWeather = viewModel.weather?.current, let name = viewModel.placeName {
-                
-//                cell.textLabel?.text = "Temperature: \(currentWeather.temp)"
-                cell.textLabel?.text = "\(name) current temp \(currentWeather.temp)"
+                cell.textLabel?.text = "\(name) | \(currentWeather.temp)°"
+            }
+        } else if indexPath.section == WeatherSection.hourlyTemps.rawValue {
+            if let hourlyWeather = viewModel.weather?.hourly[indexPath.row] {
+                let date = Date(timeIntervalSince1970: Double(hourlyWeather.dt))
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "h a" // "03 PM"
+                let dateString = dateFormatter.string(from: date)
+                cell.textLabel?.text = "\(dateString) | \(hourlyWeather.temp)°"
+            }
+        } else if indexPath.section == WeatherSection.dailyTemps.rawValue {
+            if let dailyWeather = viewModel.weather?.daily[indexPath.row] {
+                let date = Date(timeIntervalSince1970: Double(dailyWeather.dt))
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "EEEE, MMM d" // "Monday, Jan 1"
+                let dateString = dateFormatter.string(from: date)
+                cell.textLabel?.text = "\(dateString) | \(dailyWeather.temp.day)°"
             }
         }
-        
         
         return cell
     }
