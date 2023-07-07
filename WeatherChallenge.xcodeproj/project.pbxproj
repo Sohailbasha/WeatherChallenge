@@ -14,6 +14,7 @@
 		FD9266602A5860BA006AA2CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD92665F2A5860BA006AA2CD /* Assets.xcassets */; };
 		FD9266632A5860BA006AA2CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD9266612A5860BA006AA2CD /* LaunchScreen.storyboard */; };
 		FD92666C2A5862D8006AA2CD /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = FD92666B2A5862D8006AA2CD /* SDWebImage */; };
+		FD92666E2A586D5C006AA2CD /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD92666D2A586D5C006AA2CD /* Weather.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		FD92665F2A5860BA006AA2CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FD9266622A5860BA006AA2CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FD9266642A5860BA006AA2CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FD92666D2A586D5C006AA2CD /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 				FD9266562A5860B8006AA2CD /* AppDelegate.swift */,
 				FD9266582A5860B8006AA2CD /* SceneDelegate.swift */,
 				FD92665A2A5860B8006AA2CD /* ViewController.swift */,
+				FD92666D2A586D5C006AA2CD /* Weather.swift */,
 				FD92665C2A5860B8006AA2CD /* Main.storyboard */,
 				FD92665F2A5860BA006AA2CD /* Assets.xcassets */,
 				FD9266612A5860BA006AA2CD /* LaunchScreen.storyboard */,
@@ -146,6 +149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD92666E2A586D5C006AA2CD /* Weather.swift in Sources */,
 				FD92665B2A5860B8006AA2CD /* ViewController.swift in Sources */,
 				FD9266572A5860B8006AA2CD /* AppDelegate.swift in Sources */,
 				FD9266592A5860B8006AA2CD /* SceneDelegate.swift in Sources */,
