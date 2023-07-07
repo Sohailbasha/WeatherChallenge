@@ -17,6 +17,7 @@
 		FD9266712A586E99006AA2CD /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9266702A586E99006AA2CD /* MainViewController.swift */; };
 		FD9266742A586ECF006AA2CD /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9266732A586ECF006AA2CD /* WeatherViewModel.swift */; };
 		FD9266762A587758006AA2CD /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9266752A587758006AA2CD /* WeatherService.swift */; };
+		FD92667B2A58AF27006AA2CD /* SearchInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD92667A2A58AF27006AA2CD /* SearchInputViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		FD9266702A586E99006AA2CD /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		FD9266732A586ECF006AA2CD /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 		FD9266752A587758006AA2CD /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
+		FD92667A2A58AF27006AA2CD /* SearchInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInputViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,12 +66,12 @@
 		FD9266552A5860B8006AA2CD /* WeatherChallenge */ = {
 			isa = PBXGroup;
 			children = (
-				FD9266702A586E99006AA2CD /* MainViewController.swift */,
+				FD92667C2A58B3C8006AA2CD /* ViewControllers */,
 				FD9266732A586ECF006AA2CD /* WeatherViewModel.swift */,
+				FD92666F2A586E20006AA2CD /* Models */,
 				FD9266792A5894BC006AA2CD /* Networking */,
 				FD9266562A5860B8006AA2CD /* AppDelegate.swift */,
 				FD9266582A5860B8006AA2CD /* SceneDelegate.swift */,
-				FD92666F2A586E20006AA2CD /* Models */,
 				FD92665C2A5860B8006AA2CD /* Main.storyboard */,
 				FD92665F2A5860BA006AA2CD /* Assets.xcassets */,
 				FD9266612A5860BA006AA2CD /* LaunchScreen.storyboard */,
@@ -92,6 +94,15 @@
 				FD9266752A587758006AA2CD /* WeatherService.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		FD92667C2A58B3C8006AA2CD /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				FD9266702A586E99006AA2CD /* MainViewController.swift */,
+				FD92667A2A58AF27006AA2CD /* SearchInputViewController.swift */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -175,6 +186,7 @@
 				FD92666E2A586D5C006AA2CD /* Weather.swift in Sources */,
 				FD9266572A5860B8006AA2CD /* AppDelegate.swift in Sources */,
 				FD9266592A5860B8006AA2CD /* SceneDelegate.swift in Sources */,
+				FD92667B2A58AF27006AA2CD /* SearchInputViewController.swift in Sources */,
 				FD9266762A587758006AA2CD /* WeatherService.swift in Sources */,
 				FD9266712A586E99006AA2CD /* MainViewController.swift in Sources */,
 			);
