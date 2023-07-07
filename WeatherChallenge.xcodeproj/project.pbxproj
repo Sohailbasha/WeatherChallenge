@@ -13,6 +13,7 @@
 		FD92665E2A5860B8006AA2CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD92665C2A5860B8006AA2CD /* Main.storyboard */; };
 		FD9266602A5860BA006AA2CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD92665F2A5860BA006AA2CD /* Assets.xcassets */; };
 		FD9266632A5860BA006AA2CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD9266612A5860BA006AA2CD /* LaunchScreen.storyboard */; };
+		FD92666C2A5862D8006AA2CD /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = FD92666B2A5862D8006AA2CD /* SDWebImage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD92666C2A5862D8006AA2CD /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +85,9 @@
 			dependencies = (
 			);
 			name = WeatherChallenge;
+			packageProductDependencies = (
+				FD92666B2A5862D8006AA2CD /* SDWebImage */,
+			);
 			productName = WeatherChallenge;
 			productReference = FD9266532A5860B8006AA2CD /* WeatherChallenge.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +116,9 @@
 				Base,
 			);
 			mainGroup = FD92664A2A5860B8006AA2CD;
+			packageReferences = (
+				FD92666A2A5862D8006AA2CD /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			productRefGroup = FD9266542A5860B8006AA2CD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -358,6 +366,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FD92666A2A5862D8006AA2CD /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FD92666B2A5862D8006AA2CD /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD92666A2A5862D8006AA2CD /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FD92664B2A5860B8006AA2CD /* Project object */;
 }
