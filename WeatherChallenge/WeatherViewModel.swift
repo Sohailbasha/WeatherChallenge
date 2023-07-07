@@ -7,10 +7,13 @@
 
 import Foundation
 import Combine
+import CoreLocation
 
-class WeatehrViewModel {
+class WeatherViewModel: NSObject {
 
     @Published var weather: Weather?
+    
+    let locationmanager = CLLocationManager()
     
 
     func fetchWeatherData(by cityName: String) {
@@ -25,4 +28,6 @@ class WeatehrViewModel {
 }
 
 
-
+extension WeatherViewModel: CLLocationManagerDelegate {
+    
+}
