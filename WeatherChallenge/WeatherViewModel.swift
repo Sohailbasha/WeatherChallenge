@@ -29,6 +29,7 @@ class WeatherViewModel: NSObject, ObservableObject {
         locationManager.delegate = self
     }
     
+    // Data fetching methods
     func getCurrentLocation() {
         let authorizationStatus = CLLocationManager.authorizationStatus()
         
@@ -83,6 +84,13 @@ class WeatherViewModel: NSObject, ObservableObject {
           })
           .store(in: &cancellables)
     }
+    
+    // formatting methods
+    func formattedDateString(from date: Date, dateFormat: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = dateFormat
+        return dateFormatter.string(from: date)
+    }
 }
 
 protocol WeatherViewModelLocationDelegate: AnyObject {
@@ -102,8 +110,8 @@ extension WeatherViewModel: CLLocationManagerDelegate {
           case .authorizedWhenInUse, .authorizedAlways:
               locationManager.startUpdatingLocation()
           case .denied, .restricted:
+              // If we cannot get users location, show them temperature for San Fransisco
               fetchWeatherDataAndReverseGeocode(latitude: 37.7749, longitude: -122.4194)
-              // alert the user letting them know to give access
           default:
               return
           }
