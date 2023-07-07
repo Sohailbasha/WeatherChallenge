@@ -23,11 +23,8 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.title = "Sohail's weather app"
         setupViews()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "weatherCell")
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchButtonTapped))
 
         viewModel.viewModelLocationDelegate = self
         
@@ -36,11 +33,11 @@ class MainViewController: UIViewController {
             // make a request for that city name
             viewModel.fetchWeatherData(by: lastSearchedPlace)
         } else {
-            // get current location
-            // if we can't use CL, use SF
-            // default to san fransisco
+            // Fall back on users locatoin
+            // We don't need to do anything here. Creating the location manager will ask the user for their location. And if they deny, we will set default coordinates
         }
         
+        // set up subscriptions to place name and weather properties
         viewModel.$placeName
             .sink { [weak self] _ in
                 DispatchQueue.main.async {
@@ -69,6 +66,9 @@ class MainViewController: UIViewController {
     }
     
     func setupViews() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchButtonTapped))
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "weatherCell")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -97,18 +97,16 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // per section, return number of items
-        if section == WeatherSection.currentTemp.rawValue {
+        switch section {
+        case WeatherSection.currentTemp.rawValue:
             return viewModel.weather?.current.weather.count ?? 0
-            
-        } else if section == WeatherSection.hourlyTemps.rawValue {
+        case WeatherSection.hourlyTemps.rawValue:
             return viewModel.weather?.hourly.count ?? 0
-            
-        } else if section == WeatherSection.dailyTemps.rawValue {
+        case WeatherSection.dailyTemps.rawValue:
             return viewModel.weather?.daily.count ?? 0
+        default:
+            return 0
         }
-        
-        return 0
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -125,7 +123,8 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath)
+        var cell = tableView.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath)
+        cell = UITableViewCell(style: .subtitle, reuseIdentifier: "weatherCell")
         
         switch indexPath.section {
         case WeatherSection.currentTemp.rawValue:
@@ -141,7 +140,6 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         default:
             break
         }
-        
         return cell
     }
     
@@ -152,12 +150,13 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
             iconImageView.sd_setImage(with: iconURL)
         }
         return iconImageView
-        
     }
     
     fileprivate func configureCellForCurrentWeather(_ cell: UITableViewCell) {
         if let currentWeather = viewModel.weather?.current, let name = viewModel.placeName {
-            cell.textLabel?.text = "\(name) | \(currentWeather.temp)°"
+            cell.textLabel?.text = "\(name) | \(Int(currentWeather.temp))°"
+            cell.detailTextLabel?.text = currentWeather.weather.first?.description
+            
             if let icon = currentWeather.weather.first?.icon {
                 cell.accessoryView = createWeatherIconImageView(icon)
             } else {
