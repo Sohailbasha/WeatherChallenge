@@ -18,11 +18,13 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="hYN-KY-YWS"/>
+                    <navigationItem key="navigationItem" id="hYN-KY-YWS">
+                        <barButtonItem key="rightBarButtonItem" title="Search" id="apy-rT-E76"/>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="718.32061068702285" y="4.9295774647887329"/>
+            <point key="canvasLocation" x="567" y="5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="vjb-y8-Y14">
