@@ -23,6 +23,10 @@ class WeatherService {
     
     var cancellables = Set<AnyCancellable>()
     
+    deinit {
+        cancellables.forEach { $0.cancel() }
+    }
+    
     func fetchWeatherData(latitude: Double, longitude: Double) -> AnyPublisher<Weather, Error> {
       var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)!
       urlComponents.queryItems = [
@@ -98,8 +102,4 @@ class WeatherService {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
-}
-
-class ImageService {
-    static let shared = ImageService()
 }
