@@ -8,12 +8,13 @@
 import UIKit
 import CoreLocation
 import Combine
+import SDWebImage
+
+// user default for last searched city name
+let kLastSearchedPlace = "lastSearchedPlace"
 
 class MainViewController: UIViewController {
     
-    // user default for last searched city name
-    let kLastSearchedPlace = "lastSearchedPlace"
-
     var viewModel = WeatherViewModel()
     
     let tableView: UITableView = UITableView()
@@ -28,9 +29,12 @@ class MainViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchButtonTapped))
 
+        viewModel.viewModelLocationDelegate = self
+        
         let userDefaults = UserDefaults.standard
         if let lastSearchedPlace = userDefaults.string(forKey: kLastSearchedPlace) {
             // make a request for that city name
+            viewModel.fetchWeatherData(by: lastSearchedPlace)
         } else {
             // get current location
             // if we can't use CL, use SF
@@ -53,17 +57,12 @@ class MainViewController: UIViewController {
             }
             .store(in: &cancellables)
         
-       
-        viewModel.fetchWeatherDataAndReverseGeocode(latitude: 37.7749, longitude: -122.4194)
-        
-        
         tableView.reloadData()
     }
     
     @objc func searchButtonTapped() {
         // Handle the search button tap event here
         let searchVC = SearchInputViewController()
-//        searchVC.modalPresentationStyle = .overFullScreen
         searchVC.delegate = self
         searchVC.modalPresentationStyle = .overCurrentContext
         self.present(searchVC, animated: true, completion: nil)
@@ -125,7 +124,6 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath)
         
@@ -133,6 +131,10 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         if indexPath.section == 0 {
             if let currentWeather = viewModel.weather?.current, let name = viewModel.placeName {
                 cell.textLabel?.text = "\(name) | \(currentWeather.temp)°"
+                
+                if let icon = currentWeather.weather.first?.icon {
+                    cell.accessoryView = createWeatherIconImageView(icon)
+                }
             }
         } else if indexPath.section == WeatherSection.hourlyTemps.rawValue {
             if let hourlyWeather = viewModel.weather?.hourly[indexPath.row] {
@@ -141,6 +143,12 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
                 dateFormatter.dateFormat = "h a" // "03 PM"
                 let dateString = dateFormatter.string(from: date)
                 cell.textLabel?.text = "\(dateString) | \(hourlyWeather.temp)°"
+                
+                if let icon = hourlyWeather.weather.first?.icon {
+                    cell.accessoryView = createWeatherIconImageView(icon)
+                } else {
+                    cell.accessoryView = nil
+                }
             }
         } else if indexPath.section == WeatherSection.dailyTemps.rawValue {
             if let dailyWeather = viewModel.weather?.daily[indexPath.row] {
@@ -149,20 +157,62 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
                 dateFormatter.dateFormat = "EEEE, MMM d" // "Monday, Jan 1"
                 let dateString = dateFormatter.string(from: date)
                 cell.textLabel?.text = "\(dateString) | \(dailyWeather.temp.day)°"
+                
+                if let icon = dailyWeather.weather.first?.icon {
+                    cell.accessoryView = createWeatherIconImageView(icon)
+                } else {
+                    cell.accessoryView = nil
+                }
             }
         }
         
+        
         return cell
+    }
+    
+    fileprivate func createWeatherIconImageView(_ iconName: String) -> UIImageView {
+        print(iconName)
+        let iconImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+        let iconURLString = "https://openweathermap.org/img/w/\(iconName).png"
+        if let iconURL = URL(string: iconURLString) {
+            iconImageView.sd_setImage(with: iconURL)
+        }
+        return iconImageView
+        
     }
 }
 
 extension MainViewController: SearchInputViewControllerDelegate {
-    
     func searchViewController(_ viewController: SearchInputViewController, didEnterLocation input: String) {
-        print("Did enter location: \(input)")
+        viewModel.fetchWeatherData(by: input)
     }
     
     func searchViewControllerDidTriggerCurrentLocation(_ viewController: SearchInputViewController) {
-        print("did trigger CL")
+        viewModel.getCurrentLocation()
+    }
+}
+
+extension MainViewController: WeatherViewModelLocationDelegate {
+    func sendUserToSettings() {
+        let alertController = UIAlertController(
+             title: "Location Access Denied",
+             message: "Please enable location services in Settings to use the current location feature.",
+             preferredStyle: .alert
+         )
+         
+         let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
+             guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
+             if UIApplication.shared.canOpenURL(settingsURL) {
+                 UIApplication.shared.open(settingsURL)
+             }
+         }
+         alertController.addAction(settingsAction)
+         
+         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+         alertController.addAction(cancelAction)
+         
+        DispatchQueue.main.async {
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
 }
