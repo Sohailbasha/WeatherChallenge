@@ -47,3 +47,8 @@ struct Geocoding: Decodable {
   let lon: Double
   let name: String
 }
+
+struct GeocodeResponse: Codable {
+    let lat: Double
+    let lon: Double
+}
