@@ -13,8 +13,6 @@ class MainViewController: UIViewController {
     
     // user default for last searched city name
     let kLastSearchedPlace = "lastSearchedPlace"
-    
-    var locationManager: CLLocationManager?
 
     var viewModel = WeatherViewModel()
     
@@ -28,8 +26,8 @@ class MainViewController: UIViewController {
         setupViews()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "weatherCell")
         
-        
-        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchButtonTapped))
+
         let userDefaults = UserDefaults.standard
         if let lastSearchedPlace = userDefaults.string(forKey: kLastSearchedPlace) {
             // make a request for that city name
@@ -57,7 +55,18 @@ class MainViewController: UIViewController {
         
        
         viewModel.fetchWeatherDataAndReverseGeocode(latitude: 37.7749, longitude: -122.4194)
+        
+        
         tableView.reloadData()
+    }
+    
+    @objc func searchButtonTapped() {
+        // Handle the search button tap event here
+        let searchVC = SearchInputViewController()
+//        searchVC.modalPresentationStyle = .overFullScreen
+        searchVC.delegate = self
+        searchVC.modalPresentationStyle = .overCurrentContext
+        self.present(searchVC, animated: true, completion: nil)
     }
     
     func setupViews() {
@@ -145,5 +154,15 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         
         return cell
     }
+}
+
+extension MainViewController: SearchInputViewControllerDelegate {
     
+    func searchViewController(_ viewController: SearchInputViewController, didEnterLocation input: String) {
+        print("Did enter location: \(input)")
+    }
+    
+    func searchViewControllerDidTriggerCurrentLocation(_ viewController: SearchInputViewController) {
+        print("did trigger CL")
+    }
 }
