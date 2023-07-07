@@ -8,15 +8,15 @@
 import Foundation
 
 struct Weather: Decodable {
-  let current: Current
-  let hourly: [Hourly]
-  let daily: [Daily]
+    let current: Current
+    let hourly: [Hourly]
+    let daily: [Daily]
 }
 
 // model object for current temperature
 struct Current: Decodable {
-  let temp: Double
-  let weather: [WeatherDetail]
+    let temp: Double
+    let weather: [WeatherDetail]
 }
 
 struct Hourly: Decodable {
@@ -27,25 +27,25 @@ struct Hourly: Decodable {
 
 struct Daily: Decodable {
     let dt: Int
-  let temp: Temperature
-  let weather: [WeatherDetail]
+    let temp: Temperature
+    let weather: [WeatherDetail]
 }
 
 struct Temperature: Decodable {
-  let day: Double
+    let day: Double
 }
 
 // model object to access icons
 struct WeatherDetail: Decodable {
-  let id: Int
-  let description: String
-  let icon: String
+    let id: Int
+    let description: String
+    let icon: String
 }
 
 struct Geocoding: Decodable {
-  let lat: Double
-  let lon: Double
-  let name: String
+    let lat: Double
+    let lon: Double
+    let name: String
 }
 
 struct GeocodeResponse: Codable {
