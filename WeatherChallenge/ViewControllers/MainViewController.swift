@@ -127,51 +127,25 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath)
         
-        
-        if indexPath.section == 0 {
-            if let currentWeather = viewModel.weather?.current, let name = viewModel.placeName {
-                cell.textLabel?.text = "\(name) | \(currentWeather.temp)°"
-                
-                if let icon = currentWeather.weather.first?.icon {
-                    cell.accessoryView = createWeatherIconImageView(icon)
-                }
+        switch indexPath.section {
+        case WeatherSection.currentTemp.rawValue:
+            configureCellForCurrentWeather(cell)
+        case WeatherSection.hourlyTemps.rawValue:
+            if let hourly = viewModel.weather?.hourly[indexPath.row] {
+                configureCellForHourlyWeather(cell, hourly)
             }
-        } else if indexPath.section == WeatherSection.hourlyTemps.rawValue {
-            if let hourlyWeather = viewModel.weather?.hourly[indexPath.row] {
-                let date = Date(timeIntervalSince1970: Double(hourlyWeather.dt))
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "h a" // "03 PM"
-                let dateString = dateFormatter.string(from: date)
-                cell.textLabel?.text = "\(dateString) | \(hourlyWeather.temp)°"
-                
-                if let icon = hourlyWeather.weather.first?.icon {
-                    cell.accessoryView = createWeatherIconImageView(icon)
-                } else {
-                    cell.accessoryView = nil
-                }
-            }
-        } else if indexPath.section == WeatherSection.dailyTemps.rawValue {
+        case WeatherSection.dailyTemps.rawValue:
             if let dailyWeather = viewModel.weather?.daily[indexPath.row] {
-                let date = Date(timeIntervalSince1970: Double(dailyWeather.dt))
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "EEEE, MMM d" // "Monday, Jan 1"
-                let dateString = dateFormatter.string(from: date)
-                cell.textLabel?.text = "\(dateString) | \(dailyWeather.temp.day)°"
-                
-                if let icon = dailyWeather.weather.first?.icon {
-                    cell.accessoryView = createWeatherIconImageView(icon)
-                } else {
-                    cell.accessoryView = nil
-                }
+                configureCellForDailyWeather(cell, dailyWeather)
             }
+        default:
+            break
         }
-        
         
         return cell
     }
     
     fileprivate func createWeatherIconImageView(_ iconName: String) -> UIImageView {
-        print(iconName)
         let iconImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
         let iconURLString = "https://openweathermap.org/img/w/\(iconName).png"
         if let iconURL = URL(string: iconURLString) {
@@ -179,6 +153,41 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         }
         return iconImageView
         
+    }
+    
+    fileprivate func configureCellForCurrentWeather(_ cell: UITableViewCell) {
+        if let currentWeather = viewModel.weather?.current, let name = viewModel.placeName {
+            cell.textLabel?.text = "\(name) | \(currentWeather.temp)°"
+            if let icon = currentWeather.weather.first?.icon {
+                cell.accessoryView = createWeatherIconImageView(icon)
+            } else {
+                cell.accessoryView = nil
+            }
+        }
+    }
+    
+    fileprivate func configureCellForHourlyWeather(_ cell: UITableViewCell, _ hourlyWeather: Hourly) {
+        let date = Date(timeIntervalSince1970: Double(hourlyWeather.dt))
+        let dateString = viewModel.formattedDateString(from: date, dateFormat: "h a") // "3 PM"
+        cell.textLabel?.text = "\(dateString) | \(Int(hourlyWeather.temp))°"
+        
+        if let icon = hourlyWeather.weather.first?.icon {
+            cell.accessoryView = createWeatherIconImageView(icon)
+        } else {
+            cell.accessoryView = nil
+        }
+    }
+    
+    fileprivate func configureCellForDailyWeather(_ cell: UITableViewCell, _ dailyWeather: Daily) {
+        let date = Date(timeIntervalSince1970: Double(dailyWeather.dt))
+        let dateString = viewModel.formattedDateString(from: date, dateFormat: "EEEE, MMM d") // "Monday, Jan 1"
+        cell.textLabel?.text = "\(dateString) | \(Int(dailyWeather.temp.day))°"
+        
+        if let icon = dailyWeather.weather.first?.icon {
+            cell.accessoryView = createWeatherIconImageView(icon)
+        } else {
+            cell.accessoryView = nil
+        }
     }
 }
 
