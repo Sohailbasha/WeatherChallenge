@@ -194,11 +194,11 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension MainViewController: SearchInputViewControllerDelegate {
-    func searchViewController(_ viewController: SearchInputViewController, didEnterLocation input: String) {
+    func searchViewControllerDidEnterLocation(input: String) {
         viewModel.fetchWeatherData(by: input)
     }
     
-    func searchViewControllerDidTriggerCurrentLocation(_ viewController: SearchInputViewController) {
+    func searchViewControllerDidTriggerCurrentLocation() {
         viewModel.getCurrentLocation()
     }
 }

@@ -8,12 +8,10 @@
 import UIKit
 
 protocol SearchInputViewControllerDelegate: AnyObject {
-    // had I more time i would have deleted the viewcontroller params. I had an idea for them but didn't use them in the end
-    
     /// Notifies the main view controller of the text that was entered on this screen
-    func searchViewController(_ viewController: SearchInputViewController, didEnterLocation input: String)
+    func searchViewControllerDidEnterLocation(input: String)
     /// Notifies the main view controller that it should fetch the users current location
-    func searchViewControllerDidTriggerCurrentLocation(_ viewController: SearchInputViewController)
+    func searchViewControllerDidTriggerCurrentLocation()
 }
 
 class SearchInputViewController: UIViewController {
@@ -73,16 +71,16 @@ class SearchInputViewController: UIViewController {
     }
     
     @objc func confirmButtonTapped() {
-        if let text = searchTextField.text {
-            delegate?.searchViewController(self, didEnterLocation: text)
+        if let text = searchTextField.text, !text.isEmpty {
+            delegate?.searchViewControllerDidEnterLocation(input: text)
+            dismiss(animated: true)
         } else {
-            // highlight the textfield?
+            searchTextField.shake()
         }
-        dismiss(animated: true)
     }
     
     @objc func useCurrentLocationButtonTapped() {
-        delegate?.searchViewControllerDidTriggerCurrentLocation(self)
+        delegate?.searchViewControllerDidTriggerCurrentLocation()
         dismiss(animated: true)
     }
     
@@ -105,3 +103,21 @@ class SearchInputViewController: UIViewController {
         ])
     }
 }
+
+protocol Shakable {
+    func shake()
+}
+// allow all UIView children to be animated
+extension Shakable where Self: UIView {
+    func shake() {
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = 0.03
+        animation.repeatCount = 3
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: self.center.x - 10, y: self.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + 10, y: self.center.y))
+        self.layer.add(animation, forKey: "position")
+    }
+}
+
+extension UITextField: Shakable {}
