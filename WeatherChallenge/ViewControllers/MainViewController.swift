@@ -128,10 +128,13 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath)
         cell = UITableViewCell(style: .subtitle, reuseIdentifier: "weatherCell")
+        cell.selectionStyle = .none
         
         switch indexPath.section {
         case WeatherSection.currentTemp.rawValue:
-            configureCellForCurrentWeather(cell)
+            if let current = viewModel.weather?.current {
+                configureCellForCurrentWeather(cell, current)
+            }
         case WeatherSection.hourlyTemps.rawValue:
             if let hourly = viewModel.weather?.hourly[indexPath.row] {
                 configureCellForHourlyWeather(cell, hourly)
@@ -155,8 +158,9 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         return iconImageView
     }
     
-    fileprivate func configureCellForCurrentWeather(_ cell: UITableViewCell) {
-        if let currentWeather = viewModel.weather?.current, let name = viewModel.placeName {
+    fileprivate func configureCellForCurrentWeather(_ cell: UITableViewCell, _ currentWeather: Current) {
+        
+        if let name = viewModel.placeName {
             cell.textLabel?.text = "\(name) | \(Int(currentWeather.temp))°"
             cell.detailTextLabel?.text = currentWeather.weather.first?.description
             
