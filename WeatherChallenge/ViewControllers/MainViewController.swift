@@ -150,7 +150,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     fileprivate func createWeatherIconImageView(_ iconName: String) -> UIImageView {
-        let iconImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+        let iconImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         let iconURLString = "https://openweathermap.org/img/w/\(iconName).png"
         if let iconURL = URL(string: iconURLString) {
             iconImageView.sd_setImage(with: iconURL)
